@@ -4,6 +4,7 @@ services:
   # PHPをLambda上で実行する環境を再現したコンテナ
   # @see https://bref.sh/docs/local-development 公式ドキュメント ローカル環境構築を解説しているページ
   app:
+    container_name: bref-app
     image: bref/php-83-fpm-dev:2
     ports: ["8000:8000"]
     # ホスト側のカレントディレクトリをコンテナ側の/var/taskにマウント
@@ -19,6 +20,7 @@ services:
   # @see https://docs.blackfire.io/up-and-running/docker 公式ドキュメント Dockerでの利用方法を解説しているページ
   blackfire:
     image: blackfire/blackfire
+    container_name: blackfire
     environment:
       BLACKFIRE_SERVER_ID: server-id
       BLACKFIRE_SERVER_TOKEN: server-token
