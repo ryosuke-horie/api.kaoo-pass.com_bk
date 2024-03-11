@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  # PHPをLambda上で実行する環境を再現したコンテナ
+  # @see https://bref.sh/docs/local-development 公式ドキュメント ローカル環境構築を解説しているページ
+  app:
+    image: bref/php-83-fpm-dev:2
+    ports: ["8000:8000"]
+    # ホスト側のカレントディレクトリをコンテナ側の/var/taskにマウント
+    # Lambdaでは/var/taskにコードが配置される。
+    # 本来は書き込みができない（読み取り専用）が、ローカル環境では書き込みができるようになっている。
+    volumes:
+      - .:/var/task
+    environment:
+      HANDLER: public/index.php
+      DOCUMENT_ROOT: public
+
+  # パフォーマンス計測が行えるツール。
+  # @see https://docs.blackfire.io/up-and-running/docker 公式ドキュメント Dockerでの利用方法を解説しているページ
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: server-id
+      BLACKFIRE_SERVER_TOKEN: server-token
