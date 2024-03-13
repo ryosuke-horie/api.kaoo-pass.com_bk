@@ -39,5 +39,13 @@ functions:
         #          input: '"schedule:run"'
 
 plugins:
-    # We need to include the Bref plugin
-    - ./vendor/bref/bref
+  - ./vendor/bref/bref
+  - serverless-lift
+
+constructs:
+    website:
+        type: server-side-website
+        assets:
+            '/build/*': public/build
+            '/favicon.ico': public/favicon.ico
+            '/robots.txt': public/robots.txt

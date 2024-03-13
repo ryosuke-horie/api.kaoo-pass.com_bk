@@ -5,4 +5,5 @@
 serverless deploy --aws-profile mem-vision-dev
 
 ## 初期アクセス
-https://a9k7jzov9f.execute-api.us-east-1.amazonaws.com
+フロント：https://d7hdiox79hjvb.cloudfront.net/
+バックエンド：https://a9k7jzov9f.execute-api.us-east-1.amazonaws.com
