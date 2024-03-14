@@ -7,6 +7,17 @@ provider:
     # Environment variables
     environment:
         APP_ENV: production # Or use ${sls:stage} if you want the environment to match the stage
+        FILESYSTEM_DISK: s3
+        AWS_BUCKET: !Ref Storage
+    iam:
+        role:
+            statements:
+                # Allow Lambda to read and write files in the S3 buckets
+                -   Effect: Allow
+                    Action: s3:*
+                    Resource:
+                        - !Sub '${Storage.Arn}' # the storage bucket
+                        - !Sub '${Storage.Arn}/*' # and everything inside
 
 package:
     # Files and directories to exclude from deployment
@@ -51,21 +62,7 @@ constructs:
             '/robots.txt': public/robots.txt
 
 resources:
-  Resources:
-    LaravelStorageS3Bucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:service}-${self:provider.region}-storage
-        CorsConfiguration:
-          CorsRules:
-            - AllowedOrigins:
-                - "*"
-              AllowedHeaders:
-                - "*"
-              AllowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - HEAD
-              MaxAge: 3000
+    Resources:
+        # Create our S3 storage bucket using CloudFormation
+        Storage:
+            Type: AWS::S3::Bucket
