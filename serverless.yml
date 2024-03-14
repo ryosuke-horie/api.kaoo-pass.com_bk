@@ -49,3 +49,23 @@ constructs:
             '/build/*': public/build
             '/favicon.ico': public/favicon.ico
             '/robots.txt': public/robots.txt
+
+resources:
+  Resources:
+    LaravelStorageS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:provider.region}-storage
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
