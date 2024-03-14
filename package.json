@@ -19,7 +19,7 @@
         "vue": "^3.4.21"
     },
     "dependencies": {
-        "@types/node": "^20.11.26",
+        "@types/node": "^20.11.27",
         "path": "^0.12.7"
     }
 }
