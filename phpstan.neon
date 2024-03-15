@@ -1,13 +1,16 @@
 includes:
+    - phpstan-baseline.neon
     - vendor/larastan/larastan/extension.neon
+
 
 parameters:
 
     paths:
         - app/
+        - config/
+        - routes/
 
-    # Level 9 is the highest level
-    level: 5
+    level: 9
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
