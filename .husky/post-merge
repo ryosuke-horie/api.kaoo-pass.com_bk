@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# pull される前後を比較し、package-lock.json の変更があれば npm ci を行う
+(git diff @{1} HEAD --name-only | grep "package-lock.json" > /dev/null) && npm ci || echo "No need npm install operation."
+
+# pull される前後を比較し、composer.lock の変更があれば composer install を行う
+(git diff @{1} HEAD --name-only | grep "composer.lock" > /dev/null) && composer install || echo "No need composer install operation."

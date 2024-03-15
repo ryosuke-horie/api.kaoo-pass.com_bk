@@ -3,3 +3,4 @@ node_modules/
 .git/
 .serverless/
 public/build/assets
+.phpunit.result.cache
