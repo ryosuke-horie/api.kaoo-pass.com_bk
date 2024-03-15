@@ -12,7 +12,8 @@ services:
     # 本来は書き込みができない（読み取り専用）が、ローカル環境では書き込みができるようになっている。
     volumes:
       - .:/var/task
-      - ./storage:/var/task/storage
+      - ./storage:/var/task/storage:rw
+      - ./storage/framework/views:/tmp/storage/framework/views:rw
     environment:
       HANDLER: public/index.php
       DOCUMENT_ROOT: public
