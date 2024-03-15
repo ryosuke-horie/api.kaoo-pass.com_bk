@@ -14,3 +14,6 @@ serverless deploy --aws-profile mem-vision-dev
 sudo apt-get update
 sudo apt-get install php-pgsql
 ```
+
+## API エンドポイント（暫定）
+https://ject1xt608.execute-api.ap-northeast-1.amazonaws.com/api/
