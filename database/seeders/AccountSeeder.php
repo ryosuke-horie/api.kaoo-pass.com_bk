@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Account;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Account;
 
 class AccountSeeder extends Seeder
 {
