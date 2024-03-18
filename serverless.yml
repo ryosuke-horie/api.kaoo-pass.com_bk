@@ -27,13 +27,18 @@ functions:
         timeout: 28
         events:
             - httpApi: '*'
+        layers:
+            - ${bref-extra:pgsql-php-83}
     artisan:
         handler: artisan
         runtime: php-83-console
         timeout: 720
+        layers:
+            - ${bref-extra:pgsql-php-83}
 
 plugins:
     - ./vendor/bref/bref
+    - ./vendor/bref/extra-php-extensions
 
 resources:
     Resources:
