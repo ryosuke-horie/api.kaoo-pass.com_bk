@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     /**
      * ログイン
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request): JsonResponse
     {
@@ -26,6 +24,7 @@ class AuthController extends Controller
                  */
                 $tokenName = $request->has('token_name') ? $request->token_name : 'AccessToken';
                 $token = $user->createToken($tokenName)->plainTextToken;
+
                 return response()->json(['token' => $token], 200);
             }
         }
@@ -35,8 +34,6 @@ class AuthController extends Controller
 
     /**
      * ユーザー情報取得
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function user(Request $request): JsonResponse
     {
@@ -55,8 +52,6 @@ class AuthController extends Controller
 
     /**
      * ログアウト
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request): JsonResponse
     {
