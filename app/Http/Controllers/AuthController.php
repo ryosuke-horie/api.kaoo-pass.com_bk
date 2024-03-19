@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // 認証に成功した後、現在のユーザーを取得
-            $user = Auth::user(); // ここで$userはnullではないはずです
+            $user = Auth::user();
 
             if ($user !== null) {
                 // トークン名をリクエストから取得するか、デフォルト値を使用

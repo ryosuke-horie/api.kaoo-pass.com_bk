@@ -12,7 +12,7 @@ class AccountSeeder extends Seeder
     {
         Account::create([
             'name' => 'testuser',
-            'email' => 'test@examle.com',
+            'email' => 'test@example.com',
             'password' => Hash::make('password'),
         ]);
     }
