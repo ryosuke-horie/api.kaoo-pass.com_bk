@@ -5,15 +5,18 @@ services:
   # @see https://bref.sh/docs/local-development 公式ドキュメント ローカル環境構築を解説しているページ
   app:
     container_name: bref-app
-    image: bref/php-83-fpm-dev:2
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports: ["8000:8000"]
     # ホスト側のカレントディレクトリをコンテナ側の/var/taskにマウント
     # Lambdaでは/var/taskにコードが配置される。
     # 本来は書き込みができない（読み取り専用）が、ローカル環境では書き込みができるようになっている。
     volumes:
-      - .:/var/task
+      - .:/var/task:ro
       - ./storage:/var/task/storage:rw
       - ./storage/framework/views:/tmp/storage/framework/views:rw
+      - ./storage/framework/cache:/tmp/storage/framework/cache:rw
     environment:
       HANDLER: public/index.php
       DOCUMENT_ROOT: public
