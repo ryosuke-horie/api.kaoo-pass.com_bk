@@ -13,6 +13,14 @@ provider:
                   Resource:
                       - !Sub '${Storage.Arn}'
                       - !Sub '${Storage.Arn}/*'
+    httpApi:
+      cors: true
+    resourcePolicy:
+      - Effect: Allow
+        Principal: "*"
+        Action: execute-api:Invoke
+        Resource:
+          - execute-api:/*/*/*
 
 package:
     patterns:
@@ -39,8 +47,27 @@ functions:
 plugins:
     - ./vendor/bref/bref
     - ./vendor/bref/extra-php-extensions
+    - serverless-domain-manager
 
 resources:
     Resources:
         Storage:
             Type: AWS::S3::Bucket
+
+custom:
+  customDomain:
+    # API のパスは `https://<domainName>/<basePath>/xxxx` となる
+    domainName: api.kaoo-pass.com
+    certificateName: 'api.kaoo-pass.com'
+    certificateArn: 'arn:aws:acm:ap-northeast-1:905418074681:certificate/c28ffa7e-0454-4eed-a044-236adf71f899'
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    apiType: http
+
+########################################################################################################
+# ServerlessFrameworkの設定内容に関して
+# バックエンドAPI用にLaravelをBrefを利用してLambdaにデプロイしている。
+# また、APIのドメインをカスタムドメインとして設定している。api.kaoo-pass.com
+# カスタムドメインの設定の参考サイト：https://qiita.com/sugurutakahashi12345/items/c4e0cf5708a792703b9d
+########################################################################################################
