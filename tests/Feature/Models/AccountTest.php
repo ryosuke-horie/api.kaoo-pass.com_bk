@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
 use App\Models\Account;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class AccountTest extends TestCase
 {
