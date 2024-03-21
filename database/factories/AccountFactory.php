@@ -20,7 +20,6 @@ class AccountFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => Hash::make('password'),
         ];
     }
