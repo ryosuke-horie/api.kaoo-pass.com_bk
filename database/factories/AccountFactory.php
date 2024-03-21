@@ -19,7 +19,7 @@ class AccountFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => 'test@example.com',
             'password' => Hash::make('password'),
         ];
     }
