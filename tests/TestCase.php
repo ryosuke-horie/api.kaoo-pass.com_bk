@@ -2,10 +2,10 @@
 
 namespace Tests;
 
+use App\Models\Account;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\Test;
-use App\Models\Account;
 
 abstract class TestCase extends BaseTestCase
 {
