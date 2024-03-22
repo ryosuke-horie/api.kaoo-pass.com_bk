@@ -21,11 +21,12 @@ services:
       HANDLER: public/index.php
       DOCUMENT_ROOT: public
 
-  # # パフォーマンス計測が行えるツール。
-  # # @see https://docs.blackfire.io/up-and-running/docker 公式ドキュメント Dockerでの利用方法を解説しているページ
-  # blackfire:
-  #   image: blackfire/blackfire
-  #   container_name: blackfire
-  #   environment:
-  #     BLACKFIRE_SERVER_ID: server-id
-  #     BLACKFIRE_SERVER_TOKEN: server-token
+  # テスト用のPostgresコンテナ
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'

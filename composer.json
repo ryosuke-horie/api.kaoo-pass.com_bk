@@ -55,6 +55,9 @@
         ],
         "pint": [
             "./vendor/bin/pint"
+        ],
+        "test": [
+            "@php artisan test --env=testing"
         ]
     },
     "extra": {
