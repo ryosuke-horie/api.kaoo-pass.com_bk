@@ -4,8 +4,8 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Account;
 use App\Models\User;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
