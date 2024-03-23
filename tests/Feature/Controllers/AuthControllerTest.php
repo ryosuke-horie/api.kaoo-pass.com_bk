@@ -11,7 +11,7 @@ class AuthControllerTest extends TestCase
     #[Test]
     public function ログインができることをテスト(): void
     {
-        $account = Account::factory()->create();
+        Account::factory()->testAccount()->create();
         $response = $this->post('/api/login', [
             'email' => 'test@example.com',
             'password' => 'password',
