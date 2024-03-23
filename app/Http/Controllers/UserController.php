@@ -12,7 +12,10 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = User::all();
+        // ログイン中のアカウントIDを取得
+        $account_id = auth()->id();
+        // ログイン中のアカウントに紐づくユーザー一覧を取得
+        $users = User::where('account_id', $account_id)->get();
 
         return response()->json($users);
     }

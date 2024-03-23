@@ -26,17 +26,51 @@ class UserControllerTest extends TestCase
     }
 
     #[Test]
-    public function case3_ユーザー一覧の検証(): void
+    public function case3_ユーザーがいない場合空を返す(): void
     {
-        // Accountを作成しログイン
-        $account = Account::factory()->testAccount()->create();
-        $this->actingAs($account);
-        // Userを3件作成
-        User::factory()->count(3)->create();
-        // ユーザー一覧を取得
-        $response = $this->get('/api/users');
+        // テスト用のAccountを作成
+        $testAccount = Account::factory()->testAccount()->create();
 
-        // 3件のユーザーが返却されることを検証
+        // レスポンスが空であることを検証
+        $response = $this->actingAs($testAccount)->get('/api/users');
+        $response->assertJson([]);
+    }
+
+    #[Test]
+    public function case4_ユーザーがいる場合の確認(): void
+    {
+        // テスト用のAccountを作成
+        $testAccount = Account::factory()->testAccount()->create();
+
+        // テスト用のUserを作成
+        User::factory()->count(3)->create([
+            'account_id' => $testAccount->id,
+        ]);
+
+        // ユーザーが取得できることを検証
+        $response = $this->actingAs($testAccount)->get('/api/users');
+        $response->assertJsonCount(3);
+    }
+
+    #[Test]
+    public function case5_別アカウントのユーザーは取得できない(): void
+    {
+        // テスト用のAccountを作成
+        $testAccount = Account::factory()->testAccount()->create();
+
+        // テスト用のUserを作成
+        User::factory()->count(3)->create([
+            'account_id' => $testAccount->id,
+        ]);
+
+        // 別アカウントのUserを作成
+        $anotherAccount = Account::factory()->create();
+        User::factory()->count(3)->create([
+            'account_id' => $anotherAccount->id,
+        ]);
+
+        // ユーザーが取得できることを検証
+        $response = $this->actingAs($testAccount)->get('/api/users');
         $response->assertJsonCount(3);
     }
 }
