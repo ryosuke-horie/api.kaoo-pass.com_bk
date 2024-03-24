@@ -15,14 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// helloを返すAPI(test)
-Route::get('/hello', function () {
-    return response()->json(['message' => 'hello']);
-});
-
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

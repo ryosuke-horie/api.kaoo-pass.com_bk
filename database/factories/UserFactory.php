@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,6 +30,12 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'account_id' => Account::factory(),
+            'avator_image' => fake()->imageUrl(),
+            'image2' => fake()->imageUrl(),
+            'image3' => fake()->imageUrl(),
+            'address' => fake()->address(),
+            'phone' => fake()->phoneNumber(),
         ];
     }
 

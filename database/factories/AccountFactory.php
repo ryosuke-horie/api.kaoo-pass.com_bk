@@ -19,8 +19,22 @@ class AccountFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'email' => 'test@example.com',
+            'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'),
         ];
+    }
+
+    /**
+     * `test@example.com` `password`のアカウントを作成
+     *
+     *  * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
+     */
+    public function testAccount(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email' => 'test@example.com',
+            ];
+        });
     }
 }

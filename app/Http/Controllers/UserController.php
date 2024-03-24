@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
     /**
-     * ユーザー情報一覧を返すAPI
+     * ユーザー一覧を取得
      */
     public function index(): JsonResponse
     {
-        return response()->json(['message' => 'hello']);
+        // ログイン中のアカウントIDを取得
+        $account_id = auth()->id();
+        // ログイン中のアカウントに紐づくユーザー一覧を取得
+        $users = User::where('account_id', $account_id)->get();
+
+        return response()->json($users);
     }
 }
