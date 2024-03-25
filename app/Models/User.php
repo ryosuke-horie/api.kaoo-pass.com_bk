@@ -17,7 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'account_id',
-        'avator_image',
+        'avatar_image',
         'image2',
         'image3',
         'address',
