@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'account_id' => Account::factory(),
-            'avator_image' => fake()->imageUrl(),
+            'avatar_image' => 'sample.jpg',
             'image2' => fake()->imageUrl(),
             'image3' => fake()->imageUrl(),
             'address' => fake()->address(),
