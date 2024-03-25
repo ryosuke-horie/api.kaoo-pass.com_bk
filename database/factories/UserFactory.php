@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'image3' => fake()->imageUrl(),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
+            'age' => fake()->numberBetween(1, 100),
         ];
     }
 
