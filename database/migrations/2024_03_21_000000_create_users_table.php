@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('image3');
             $table->string('address');
             $table->string('phone');
+            $table->integer('age');
             $table->rememberToken();
             $table->timestamps();
         });
