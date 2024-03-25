@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -17,10 +18,11 @@ class UserController extends Controller
         // ログイン中のアカウントに紐づくユーザー一覧を取得
         $users = User::where('account_id', $account_id)->get();
 
-        // TODO: Fix
-        // avatar_imageカラムは以下に固定（確認用）
+        // アバター画像のURLを設定
         $users->each(function ($user) {
-            $user->avatar_image = 'https:kaoo-pass.com/images/rapture_20240127134057.jpg';
+            if ($user->avatar_image) {
+                $user->avatar_image = Storage::disk('s3')->url($user->avatar_image);
+            }
         });
 
         return response()->json($users);
