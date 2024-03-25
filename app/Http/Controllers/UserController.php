@@ -17,6 +17,12 @@ class UserController extends Controller
         // ログイン中のアカウントに紐づくユーザー一覧を取得
         $users = User::where('account_id', $account_id)->get();
 
+        // TODO: Fix
+        // avator_imageカラムは以下に固定（確認用）
+        $users->each(function ($user) {
+            $user->avator_image = 'https:kaoo-pass.com/images/rapture_20240127134057.jpg';
+        });
+
         return response()->json($users);
     }
 }
