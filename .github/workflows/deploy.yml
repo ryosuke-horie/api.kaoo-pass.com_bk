@@ -23,7 +23,7 @@ jobs:
 
       # This step installs the Serverless Framework globally.
       - name: Install Serverless Framework
-        run: npm install -g serverless
+        run: npm install -g serverless && serverless plugin install -n serverless-domain-manager
 
       # This step sets up PHP environment with the specified version.
       - name: Setup PHP
