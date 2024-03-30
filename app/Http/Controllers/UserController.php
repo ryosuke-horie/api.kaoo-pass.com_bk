@@ -24,16 +24,10 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         // ログイン中のアカウントIDを取得
-        $account_id = auth()->id();
-        // ログイン中のアカウントに紐づくユーザー一覧を取得
-        $users = User::where('account_id', $account_id)->get();
+        $account_id = (int) auth()->id();
 
-        // アバター画像のURLを設定
-        $users->each(function ($user) {
-            if ($user->avatar_image) {
-                $user->avatar_image = Storage::disk('s3')->url($user->avatar_image);
-            }
-        });
+        // ユーザー一覧を取得
+        $users = $this->user->getUsers($account_id);
 
         return response()->json($users);
     }
@@ -97,14 +91,8 @@ class UserController extends Controller
      */
     public function unsubscribe(int $userId): JsonResponse
     {
-        try {
-            // unsubscribeメソッドを呼び出し
-            $this->user->unsubscribe($userId);
-        } catch (\Throwable $th) {
-            Log::error('Failed to unsubscribe user: '.$th->getMessage());
-
-            return response()->json(['error' => 'Failed to unsubscribe user'], 500);
-        }
+        // unsubscribeメソッドを呼び出し
+        $this->user->unsubscribe($userId);
 
         // ステータスコード200でレスポンスを返却
         return response()->json([], 200);

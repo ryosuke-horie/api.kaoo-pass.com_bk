@@ -106,4 +106,53 @@ class UserControllerTest extends TestCase
         $response = $this->post('/api/users/unsubscribe/1');
         $response->assertStatus(302);
     }
+
+    #[Test]
+    public function delete_case2_ログイン時のステータスコードの検証(): void
+    {
+        $account = Account::factory()->testAccount()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $this->actingAs($account);
+        $response = $this->post("/api/users/unsubscribe/{$user->id}");
+        $response->assertStatus(200);
+    }
+
+    #[Test]
+    public function delete_case3_他アカウントのユーザーは退会できない(): void
+    {
+        $account = Account::factory()->testAccount()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        $anotherAccount = Account::factory()->create();
+        $anotherUser = User::factory()->create(['account_id' => $anotherAccount->id]);
+
+        $this->actingAs($account);
+        $response = $this->post("/api/users/unsubscribe/{$anotherUser->id}");
+        $response->assertStatus(500);
+    }
+
+    #[Test]
+    public function delete_case4_存在しないユーザーは退会できない(): void
+    {
+        $account = Account::factory()->testAccount()->create();
+        $this->actingAs($account);
+        $response = $this->post('/api/users/unsubscribe/9999');
+        $response->assertStatus(500);
+    }
+
+    #[Test]
+    public function delete_case5_退会処理の確認(): void
+    {
+        $account = Account::factory()->testAccount()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        $this->actingAs($account);
+        $response = $this->post("/api/users/unsubscribe/{$user->id}");
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'is_unsubscribed' => true,
+        ]);
+    }
 }
