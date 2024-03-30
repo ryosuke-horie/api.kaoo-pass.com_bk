@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
         // テストアカウントを取得
         $account = Account::where('email', 'test@example.com')->first();
 
-        // テストアカウントに100件のユーザーを作成
-        User::factory()->count(100)->create([
+        // テストアカウントにユーザーを作成
+        User::factory()->count(10)->create([
             'account_id' => $account->id,
         ]);
     }
