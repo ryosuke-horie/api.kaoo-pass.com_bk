@@ -17,12 +17,12 @@ class User extends Authenticatable
         'email',
         'password',
         'account_id',
-        'avatar_image',
-        'image2',
-        'image3',
         'address',
         'phone',
         'age',
+        'avatar_image',
+        'image2',
+        'image3',
     ];
 
     protected $hidden = [
