@@ -6,6 +6,7 @@ use App\Http\Requests\UserPostRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -51,9 +52,9 @@ class UserController extends Controller
         }
 
         // ファイル名の生成：ファイル名_uuid.拡張子
-        $avatarImageName = $user['avatar_image']->getClientOriginalName().'_'.uniqid().'.'.$user['avatar_image']->extension();
-        $image2Name = $user['image2']->getClientOriginalName().'_'.uniqid().'.'.$user['image2']->extension();
-        $image3Name = $user['image3']->getClientOriginalName().'_'.uniqid().'.'.$user['image3']->extension();
+        $avatarImageName = $user['avatar_image']->getClientOriginalName().uniqid().'.'.$user['avatar_image']->extension();
+        $image2Name = $user['image2']->getClientOriginalName().uniqid().'.'.$user['image2']->extension();
+        $image3Name = $user['image3']->getClientOriginalName().uniqid().'.'.$user['image3']->extension();
 
         // ユーザー情報を登録
         User::create([
@@ -69,9 +70,16 @@ class UserController extends Controller
         ]);
 
         // S3に画像を保存
-        Storage::disk('s3')->putFileAs('images', $user['avatar_image'], $avatarImageName);
-        Storage::disk('s3')->putFileAs('images', $user['image2'], $image2Name);
-        Storage::disk('s3')->putFileAs('images', $user['image3'], $image3Name);
+        try {
+            Storage::disk('s3')->putFileAs('images', $user['avatar_image'], $avatarImageName);
+            Storage::disk('s3')->putFileAs('images', $user['image2'], $image2Name);
+            Storage::disk('s3')->putFileAs('images', $user['image3'], $image3Name);
+            Log::info('Images uploaded successfully');
+        } catch (\League\Flysystem\UnableToWriteFile $exception) {
+            Log::error('S3 upload error: '.$exception->getMessage());
+
+            return response()->json(['error' => 'File upload failed'], 500);
+        }
 
         // ステータスコード200でレスポンスを返却
         return response()->json([], 200);
