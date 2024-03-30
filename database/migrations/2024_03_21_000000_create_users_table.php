@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->integer('age');
+            $table->boolean('is_unsubscribed')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

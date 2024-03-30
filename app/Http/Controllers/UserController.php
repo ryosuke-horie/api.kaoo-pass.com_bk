@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    private User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * ユーザー一覧を取得
      */
@@ -79,6 +86,24 @@ class UserController extends Controller
             Log::error('S3 upload error: '.$exception->getMessage());
 
             return response()->json(['error' => 'File upload failed'], 500);
+        }
+
+        // ステータスコード200でレスポンスを返却
+        return response()->json([], 200);
+    }
+
+    /**
+     * ユーザーを退会
+     */
+    public function unsubscribe(int $userId): JsonResponse
+    {
+        try {
+            // unsubscribeメソッドを呼び出し
+            $this->user->unsubscribe($userId);
+        } catch (\Throwable $th) {
+            Log::error('Failed to unsubscribe user: '.$th->getMessage());
+
+            return response()->json(['error' => 'Failed to unsubscribe user'], 500);
         }
 
         // ステータスコード200でレスポンスを返却

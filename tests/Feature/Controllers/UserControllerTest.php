@@ -96,4 +96,14 @@ class UserControllerTest extends TestCase
     //     $response = $this->post('/api/users');
     //     $response->assertStatus(200);
     // }
+
+    /***********************************************************
+     *                 会員退会機能のテスト開始                  *
+     ***********************************************************/
+    #[Test]
+    public function delete_case1_未ログインのステータスコードの検証(): void
+    {
+        $response = $this->post('/api/users/unsubscribe/1');
+        $response->assertStatus(302);
+    }
 }
