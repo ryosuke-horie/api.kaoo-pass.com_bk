@@ -1,3 +1,6 @@
+# インストール
+composer install
+
 # 静的解析
 composer run pint
 composer run phpstan
