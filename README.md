@@ -2,9 +2,10 @@
 
 ## デプロイ方法
 参考：https://forestbook-freelance.com/2021/03/12/serverless-framework-aws/
+configは自動でserverlessFrameworkが読み込むようで、そうしないと画像のアップ処理等でキーのエラーが起きる。
 ```
-php artisan config:clear
-php artisan config:cache
+rm -rf vendor/
+composer install --prefer-dist --optimize-autoloader --no-dev
 serverless deploy --aws-profile mem-vision-dev
 ```
 
