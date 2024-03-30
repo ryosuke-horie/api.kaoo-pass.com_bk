@@ -36,24 +36,24 @@ class UserController extends Controller
     public function store(UserPostRequest $request): JsonResponse
     {
         // ログイン中のアカウントIDを取得
-        $account_id = (int)auth()->id();
+        $account_id = (int) auth()->id();
 
         // バリデーション済みデータの取得
         $user = $request->validated();
 
         // ファイルデータの型チェック
         if (
-            !$user['avatar_image'] instanceof UploadedFile ||
-            !$user['image2'] instanceof UploadedFile ||
-            !$user['image3'] instanceof UploadedFile
+            ! $user['avatar_image'] instanceof UploadedFile ||
+            ! $user['image2'] instanceof UploadedFile ||
+            ! $user['image3'] instanceof UploadedFile
         ) {
             return response()->json(['error' => 'Invalid file data'], 400);
         }
 
         // ファイル名の生成：ファイル名_uuid.拡張子
-        $avatarImageName = $user['avatar_image']->getClientOriginalName() . '_' . uniqid() . '.' . $user['avatar_image']->extension();
-        $image2Name = $user['image2']->getClientOriginalName() . '_' . uniqid() . '.' . $user['image2']->extension();
-        $image3Name = $user['image3']->getClientOriginalName() . '_' . uniqid() . '.' . $user['image3']->extension();
+        $avatarImageName = $user['avatar_image']->getClientOriginalName().'_'.uniqid().'.'.$user['avatar_image']->extension();
+        $image2Name = $user['image2']->getClientOriginalName().'_'.uniqid().'.'.$user['image2']->extension();
+        $image3Name = $user['image3']->getClientOriginalName().'_'.uniqid().'.'.$user['image3']->extension();
 
         // ユーザー情報を登録
         User::create([
