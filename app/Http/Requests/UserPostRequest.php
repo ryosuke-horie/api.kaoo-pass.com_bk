@@ -11,7 +11,7 @@ class UserPostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class UserPostRequest extends FormRequest
             'email' => 'required|string',
             'address' => 'required|string',
             'phone' => 'required|string',
-            'age' => 'required|string',
+            'age' => 'required|integer',
             'avatar_image' => 'required|file',
             'image2' => 'required|file',
             'image3' => 'required|file',

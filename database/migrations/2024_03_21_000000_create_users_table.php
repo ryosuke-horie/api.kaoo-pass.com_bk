@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('set null');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('avatar_image');
             $table->string('image2');
             $table->string('image3');
