@@ -27,4 +27,29 @@ class UserController extends Controller
 
         return response()->json($users);
     }
+
+    /**
+     * ユーザーを登録
+     */
+    public function store(): JsonResponse
+    {
+        // リクエストパラメータを取得
+        $params = request()->all();
+        // ログイン中のアカウントIDを取得
+        $account_id = auth()->id();
+        // ユーザーを登録
+        $user = User::create([
+            'account_id' => $account_id,
+            'name' => $params['name'],
+            'email' => $params['email'],
+            'avatar_image' => $params['avatar_image'] ?? null,
+        ]);
+
+        // アバター画像のURLを設定
+        if ($user->avatar_image) {
+            $user->avatar_image = Storage::disk('s3')->url($user->avatar_image);
+        }
+
+        return response()->json($user);
+    }
 }

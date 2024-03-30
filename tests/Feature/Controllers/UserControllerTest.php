@@ -9,6 +9,10 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
+    /***********************************************************
+     *                 会員一覧機能のテスト開始                  *
+     ***********************************************************/
+
     #[Test]
     public function case1_未ログイン時のステータスコードの検証(): void
     {
@@ -73,4 +77,23 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($testAccount)->get('/api/users');
         $response->assertJsonCount(3);
     }
+
+    /***********************************************************
+     *                 会員登録機能のテスト開始                  *
+     ***********************************************************/
+    #[Test]
+    public function add_case1_未ログインのステータスコードの検証(): void
+    {
+        $response = $this->post('/api/users');
+        $response->assertStatus(302);
+    }
+
+    // #[Test]
+    // public function add_case2_ログイン時のステータスコードの検証(): void
+    // {
+    //     $account = Account::factory()->testAccount()->create();
+    //     $this->actingAs($account);
+    //     $response = $this->post('/api/users');
+    //     $response->assertStatus(200);
+    // }
 }
