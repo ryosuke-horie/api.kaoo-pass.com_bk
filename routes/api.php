@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // ログアウト機能
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Stripe用のグループ
+    Route::group(['prefix' => 'stripe'], function () {
+        // Stripeの連結アカウント作成
+        Route::get('/create', [StripeController::class, 'create']);
+    });
 });
