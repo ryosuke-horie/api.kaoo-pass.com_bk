@@ -16,6 +16,7 @@ class Account extends Authenticatable
         'name',
         'email',
         'password',
+        'stripe_account_id',
     ];
 
     protected $hidden = [

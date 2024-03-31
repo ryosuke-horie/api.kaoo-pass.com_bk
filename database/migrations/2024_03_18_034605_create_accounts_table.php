@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('stripe_account_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
