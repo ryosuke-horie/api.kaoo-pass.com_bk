@@ -40,6 +40,10 @@ class StripeController extends Controller
                 'card_payments' => ['requested' => true],
                 'transfers' => ['requested' => true],
             ],
+            // sports_clubs_fields(スポーツクラブ、運動場)としての利用を想定
+            'business_profile' => [
+                'mcc' => '7941',
+            ],
         ]);
 
         // StripeのアカウントIDを取得
@@ -52,8 +56,8 @@ class StripeController extends Controller
         // オンボーディングフローのリダイレクトURLを取得
         $onboardingUrl = $stripe->accountLinks->create([
             'account' => $stripeAccountId,
-            'refresh_url' => 'https://example.com/reauth',
-            'return_url' => 'https://example.com/return',
+            'refresh_url' => 'https://kaoo-pass.com',
+            'return_url' => 'https://kaoo-pass.com/dashboard',
             'type' => 'account_onboarding',
         ])->url;
 
