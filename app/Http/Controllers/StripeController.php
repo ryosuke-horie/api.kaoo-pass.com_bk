@@ -23,8 +23,14 @@ class StripeController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        if (config('stripe.stripe_secret_key') === null) {
+            return response()->json(['error' => 'Stripe secret key is not set'], 500);
+        }
+
         // Stripeクライアントの生成
-        $stripe = new \Stripe\StripeClient('sk_test_09l3shTSTKHYCzzZZsiLl2vA');
+        $stripe = new \Stripe\StripeClient([
+            'api_key' => config('stripe.stripe_secret_key'),
+        ]);
 
         // Stripeのアカウント作成
         $stripeAccount = $stripe->accounts->create([
@@ -43,6 +49,15 @@ class StripeController extends Controller
         $account->stripe_account_id = $stripeAccountId;
         $account->save();
 
-        return response()->json([], 200);
+        // オンボーディングフローのリダイレクトURLを取得
+        $onboardingUrl = $stripe->accountLinks->create([
+            'account' => $stripeAccountId,
+            'refresh_url' => 'https://example.com/reauth',
+            'return_url' => 'https://example.com/return',
+            'type' => 'account_onboarding',
+        ])->url;
+
+        // オンボーディングフローのリダイレクトURLを返す
+        return response()->json(['onboarding_url' => $onboardingUrl], 200);
     }
 }
