@@ -92,4 +92,15 @@ class StripeController extends Controller
 
         return response()->json(['success' => 'Product created'], 200);
     }
+
+    public function listProducts(Request $request): JsonResponse
+    {
+        // account_idを取得
+        $accountId = (string) auth()->id();
+
+        // アカウントに設定されているstripe_account_idをもとにStirpeに作成済みの商品を取得
+        $products = Product::where('account_id', $accountId)->get();
+
+        return response()->json(['products' => $products], 200);
+    }
 }
