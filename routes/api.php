@@ -38,5 +38,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         // 商品作成
         Route::post('/products', [StripeController::class, 'createProduct']);
+
+        // 商品価格設定
+        Route::post('/prices', [StripeController::class, 'createPrice']);
     });
 });
