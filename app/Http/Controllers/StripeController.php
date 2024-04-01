@@ -99,7 +99,8 @@ class StripeController extends Controller
         $accountId = (string) auth()->id();
 
         // アカウントに設定されているstripe_account_idをもとにStirpeに作成済みの商品を取得
-        $products = Product::where('account_id', $accountId)->get();
+        // stripe APIから商品情報を取得
+        $products = $this->stripe->products->all();
 
         return response()->json(['products' => $products], 200);
     }
