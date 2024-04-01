@@ -38,7 +38,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         // 商品作成
         Route::post('/products', [StripeController::class, 'createProduct']);
-
-        
     });
 });
