@@ -70,6 +70,9 @@ class StripeController extends Controller
         return response()->json(['onboarding_url' => $onboardingUrl], 200);
     }
 
+    /**
+     * 商品作成
+     */
     public function createProduct(Request $request): JsonResponse
     {
         // 商品情報
@@ -93,6 +96,9 @@ class StripeController extends Controller
         return response()->json(['success' => 'Product created'], 200);
     }
 
+    /**
+     * 商品一覧
+     */
     public function listProducts(Request $request): JsonResponse
     {
         // account_idを取得
@@ -103,5 +109,26 @@ class StripeController extends Controller
         $products = $this->stripe->products->all();
 
         return response()->json(['products' => $products], 200);
+    }
+
+    /**
+     * 商品価格設定
+     */
+    public function createPrice(Request $request): JsonResponse
+    {
+        // 商品情報
+        $priceData = [
+            // 価格を設定する商品ID
+            'product' => $request->input('stripe_product_id'),
+            // 価格を設定する通貨
+            'currency' => 'jpy',
+            // 価格
+            'unit_amount' => $request->input('price'),
+        ];
+
+        // 商品価格を作成
+        $createResult = $this->stripe->prices->create($priceData);
+
+        return response()->json(['success' => 'Price created'], 200);
     }
 }
