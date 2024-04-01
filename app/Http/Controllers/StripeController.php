@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\StripeClient;
 
 class StripeController extends Controller
 {
+    private StripeClient $stripe;
+
+    public function __construct()
+    {
+        // Stripeクライアントの初期化
+        $this->stripe = new StripeClient(['api_key' => config('stripe.stripe_secret_key')]);
+    }
+
     /**
      * Stripeアカウントを作成
      *
@@ -27,13 +37,8 @@ class StripeController extends Controller
             return response()->json(['error' => 'Stripe secret key is not set'], 500);
         }
 
-        // Stripeクライアントの生成
-        $stripe = new \Stripe\StripeClient([
-            'api_key' => config('stripe.stripe_secret_key'),
-        ]);
-
         // Stripeのアカウント作成
-        $stripeAccount = $stripe->accounts->create([
+        $stripeAccount = $this->stripe->accounts->create([
             'country' => 'JP',
             'type' => 'express',
             'capabilities' => [
@@ -54,7 +59,7 @@ class StripeController extends Controller
         $account->save();
 
         // オンボーディングフローのリダイレクトURLを取得
-        $onboardingUrl = $stripe->accountLinks->create([
+        $onboardingUrl = $this->stripe->accountLinks->create([
             'account' => $stripeAccountId,
             'refresh_url' => 'https://kaoo-pass.com',
             'return_url' => 'https://kaoo-pass.com/dashboard',
@@ -63,5 +68,28 @@ class StripeController extends Controller
 
         // オンボーディングフローのリダイレクトURLを返す
         return response()->json(['onboarding_url' => $onboardingUrl], 200);
+    }
+
+    public function createProduct(Request $request): JsonResponse
+    {
+        // 商品情報
+        $productData = [
+            // 顧客に表示される商品名
+            'name' => $request->name,
+            // 顧客に表示される商品説明。
+            'description' => $request->description,
+        ];
+
+        // 商品を作成
+        $createResult = $this->stripe->products->create($productData);
+
+        // stripe_product_idを取得
+        $stripeProductId = $createResult->id;
+
+        // DBに商品情報を保存
+        $product = new Product();
+        $product->createProduct($request, (string) auth()->id(), $stripeProductId);
+
+        return response()->json(['success' => 'Product created'], 200);
     }
 }

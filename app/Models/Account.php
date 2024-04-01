@@ -34,4 +34,15 @@ class Account extends Authenticatable
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Productモデルとのリレーションを定義
+     * 1対多の関係
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Product>
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
 }
