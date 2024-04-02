@@ -46,4 +46,14 @@ class Product extends Model
         $this->setAttribute('stripe_product_id', $stripeProductId);
         $this->save();
     }
+
+    /**
+     * 価格を更新
+     */
+    public function updatePrice(Request $request): void
+    {
+        // 更新対象を設定
+        $this->setAttribute('price', $request->price);
+        $this->save();
+    }
 }
