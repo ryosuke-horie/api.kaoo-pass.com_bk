@@ -50,10 +50,11 @@ class Product extends Model
     /**
      * 価格を更新
      */
-    public function updatePrice(Request $request): void
+    public function updatePrice(Request $request, string $stripePriceId): void
     {
         // 更新対象を設定
         $this->setAttribute('price', $request->price);
+        $this->setAttribute('stripe_price_id', $stripePriceId);
         $this->save();
     }
 }
