@@ -126,6 +126,17 @@ class StripeController extends Controller
             'unit_amount' => $request->input('price'),
         ];
 
+        // DBから商品情報を取得
+        $product = Product::where('stripe_product_id', $request->input('stripe_product_id'))->first();
+
+        if ($product) {
+            // DBに価格情報を保存
+            $product->updatePrice($request);
+        } else {
+            // 商品が見つからない場合の処理
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
         // 商品価格を作成
         $createResult = $this->stripe->prices->create($priceData);
 
