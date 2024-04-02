@@ -147,4 +147,12 @@ class StripeController extends Controller
 
         return response()->json(['success' => 'Price created'], 200);
     }
+
+    /**
+     * 支払いページ作成
+     */
+    public function createCheckoutSession(Request $request): JsonResponse
+    {
+        dd('test');
+    }
 }
