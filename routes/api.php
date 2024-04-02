@@ -35,5 +35,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'stripe'], function () {
         // Stripeの連結アカウント作成
         Route::get('/create', [StripeController::class, 'create']);
+
+        // 商品作成
+        Route::post('/products', [StripeController::class, 'createProduct']);
+
+        // 商品一覧
+        Route::get('/products', [StripeController::class, 'listProducts']);
+
+        // 商品価格設定
+        Route::post('/prices', [StripeController::class, 'createPrice']);
     });
 });
