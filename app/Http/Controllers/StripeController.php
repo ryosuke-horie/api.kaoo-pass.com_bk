@@ -124,6 +124,8 @@ class StripeController extends Controller
             'currency' => 'jpy',
             // 課金方式 サブスクリプション
             'billing_scheme' => 'per_unit',
+            // 課金周期
+            'recurring' => ['interval' => 'month'],
             // 価格
             'unit_amount' => $request->input('price'),
         ];
