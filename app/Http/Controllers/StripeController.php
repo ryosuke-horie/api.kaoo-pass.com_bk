@@ -122,6 +122,8 @@ class StripeController extends Controller
             'product' => $request->input('stripe_product_id'),
             // 価格を設定する通貨
             'currency' => 'jpy',
+            // 課金方式 サブスクリプション
+            'billing_scheme' => 'per_unit',
             // 価格
             'unit_amount' => $request->input('price'),
         ];
