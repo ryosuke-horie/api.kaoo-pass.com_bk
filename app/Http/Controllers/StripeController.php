@@ -170,9 +170,6 @@ class StripeController extends Controller
                 'price' => $priceId,
                 'quantity' => 1,
             ]],
-            'subscription_data' => [
-                'application_fee_percent' => 10,
-            ],
             'mode' => 'subscription',
             'success_url' => 'https://kaoo-pass.com/success',
             'cancel_url' => 'https://kaoo-pass.com/cancel',
@@ -185,7 +182,8 @@ class StripeController extends Controller
 
         // 支払いページ作成
         $session = $this->stripe->checkout->sessions->create($options);
+        $url = $session->url;
 
-        return response()->json(['session' => $session], 200);
+        return response()->json(['url' => $url], 200);
     }
 }
