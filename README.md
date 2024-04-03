@@ -1,6 +1,6 @@
 # mem-vision-serverless
 
-## デプロイ方法
+## デプロイ方法(非推奨 ローカルでの確認用)
 参考：https://forestbook-freelance.com/2021/03/12/serverless-framework-aws/
 configは自動でserverlessFrameworkが読み込むようで、そうしないと画像のアップ処理等でキーのエラーが起きる。
 ```
