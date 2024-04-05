@@ -36,4 +36,19 @@ class AuthControllerTest extends TestCase
         // レスポンスの検証
         $response->assertStatus(401);
     }
+
+    #[Test]
+    public function パスワードが間違っている場合にエラーを返すことをテスト(): void
+    {
+        Account::factory()->testAccount()->create();
+        $response = $this->post('/api/login', [
+            'email' => 'test@example.com',
+            'password' => 'error',
+        ]);
+
+        // エラーメッセージが返却されることを検証
+        $response->assertJson(['error' => '認証に失敗しました。']);
+        // レスポンスの検証
+        $response->assertStatus(401);
+    }
 }
