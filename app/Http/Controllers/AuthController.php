@@ -3,34 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\UseCases\Auth\LoginAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    protected LoginAction $loginAction;
+
+    public function __construct()
+    {
+        $this->loginAction = new LoginAction();
+    }
+
     /**
      * ログイン
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // 認証に成功した後、現在のユーザーを取得
-            $user = Auth::user();
+        // ログインロジック
+        $token = ($this->loginAction)($request);
 
-            if ($user !== null) {
-                // トークン名をリクエストから取得するか、デフォルト値を使用
-                /**
-                 * @var string $tokenName
-                 */
-                $tokenName = $request->has('token_name') ? $request->token_name : 'AccessToken';
-                $token = $user->createToken($tokenName)->plainTextToken;
-
-                return response()->json(['token' => $token], 200);
-            }
+        if ($token === '') {
+            return response()->json(['error' => '認証に失敗しました。'], 401);
         }
 
-        return response()->json(['error' => '認証に失敗しました。'], 401);
+        return response()->json(['token' => $token], 200);
     }
 
     /**
