@@ -11,6 +11,6 @@
     "husky": "^9.0.11",
     "laravel-vite-plugin": "^1.0.0",
     "serverless-domain-manager": "^7.3.8",
-    "vite": "^5.2.7"
+    "vite": "^5.2.8"
   }
 }
