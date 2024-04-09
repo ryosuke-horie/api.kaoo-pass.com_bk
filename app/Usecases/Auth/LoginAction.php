@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\Auth;
+namespace App\Usecase\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
