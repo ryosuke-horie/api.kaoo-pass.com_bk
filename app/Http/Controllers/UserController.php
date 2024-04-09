@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserPostRequest;
 use App\Models\User;
 use App\Usecases\User\IndexAction;
+use App\Usecases\User\StoreAction;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,10 +16,13 @@ class UserController extends Controller
 
     private IndexAction $indexAction;
 
+    private StoreAction $storeAction;
+
     public function __construct(User $user)
     {
         $this->user = $user;
         $this->indexAction = new IndexAction();
+        $this->storeAction = new StoreAction();
     }
 
     /**
@@ -36,20 +39,11 @@ class UserController extends Controller
      */
     public function store(UserPostRequest $request): JsonResponse
     {
-        // ログイン中のアカウントIDを取得
-        $account_id = (int) auth()->id();
-
         // バリデーション済みデータの取得
         $user = $request->validated();
 
-        // ファイルデータの型チェック
-        if (
-            ! $user['avatar_image'] instanceof UploadedFile ||
-            ! $user['image2'] instanceof UploadedFile ||
-            ! $user['image3'] instanceof UploadedFile
-        ) {
-            return response()->json(['error' => 'Invalid file data'], 400);
-        }
+        // ログイン中のアカウントIDを取得
+        $account_id = (int) auth()->id();
 
         // ファイル名の生成：ファイル名_uuid.拡張子
         $avatarImageName = $user['avatar_image']->getClientOriginalName().uniqid().'.'.$user['avatar_image']->extension();
