@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
 use App\Models\User;
+use App\Usecases\User\IndexAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
@@ -13,9 +14,12 @@ class UserController extends Controller
 {
     private User $user;
 
+    private IndexAction $indexAction;
+
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->indexAction = new IndexAction();
     }
 
     /**
@@ -23,13 +27,8 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        // ログイン中のアカウントIDを取得
-        $account_id = (int) auth()->id();
-
-        // ユーザー一覧を取得
-        $users = $this->user->getUsers($account_id);
-
-        return response()->json($users);
+        // indexActionを呼び出し
+        return ($this->indexAction)();
     }
 
     /**
