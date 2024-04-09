@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Usecase\User;
+namespace App\Usecases\User;
 
 final class IndexAction
 {
