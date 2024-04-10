@@ -9,12 +9,9 @@ use App\Usecases\Stripe\CreateProductAction;
 use App\Usecases\Stripe\ListProductAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Stripe\StripeClient;
 
 class StripeController extends Controller
 {
-    private StripeClient $stripe;
-
     private CreateAccountAction $createAccountAction;
 
     private CreateProductAction $createProductAction;
@@ -27,8 +24,6 @@ class StripeController extends Controller
 
     public function __construct()
     {
-        // Stripeクライアントの初期化
-        $this->stripe = new StripeClient(['api_key' => config('stripe.stripe_secret_key')]);
         $this->createAccountAction = new CreateAccountAction();
         $this->createProductAction = new CreateProductAction();
         $this->listProductAction = new ListProductAction();
