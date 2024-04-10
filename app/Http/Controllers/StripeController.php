@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Usecases\Stripe\CheckoutSessionAction;
 use App\Usecases\Stripe\CreateAccountAction;
 use App\Usecases\Stripe\CreatePriceAction;
 use App\Usecases\Stripe\CreateProductAction;
@@ -22,6 +23,8 @@ class StripeController extends Controller
 
     private CreatePriceAction $createPriceAction;
 
+    private CheckoutSessionAction $checkoutSessionAction;
+
     public function __construct()
     {
         // Stripeクライアントの初期化
@@ -30,6 +33,7 @@ class StripeController extends Controller
         $this->createProductAction = new CreateProductAction();
         $this->listProductAction = new ListProductAction();
         $this->createPriceAction = new CreatePriceAction();
+        $this->checkoutSessionAction = new CheckoutSessionAction();
     }
 
     /**
@@ -75,33 +79,6 @@ class StripeController extends Controller
      */
     public function createCheckoutSession(Request $request): JsonResponse
     {
-        // ユーザーが選択した商品の価格IDを取得
-        $priceId = $request->input('stripe_price_id');
-
-        // ユーザーのstripe_account_idを取得
-        $stripeAccountId = $request->user()->account->stripe_account_id ?? null;
-
-        // 支払いページ作成オプション
-        $options = [
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price' => $priceId,
-                'quantity' => 1,
-            ]],
-            'mode' => 'subscription',
-            'success_url' => 'https://kaoo-pass.com/success',
-            'cancel_url' => 'https://kaoo-pass.com/cancel',
-        ];
-
-        // stripe_account_idが存在する場合、オプションに追加
-        if ($stripeAccountId !== null) {
-            $options['stripe_account'] = $stripeAccountId;
-        }
-
-        // 支払いページ作成
-        $session = $this->stripe->checkout->sessions->create($options);
-        $url = $session->url;
-
-        return response()->json(['url' => $url], 200);
+        return $this->checkoutSessionAction->__invoke($request);
     }
 }
