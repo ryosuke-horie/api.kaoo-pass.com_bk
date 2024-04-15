@@ -10,6 +10,7 @@
         "bref/extra-php-extensions": "^1.4",
         "bref/laravel-bridge": "^2.3",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel/cashier": "^15.3",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.8",
