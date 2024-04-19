@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.2",
+    "php": "^8.3",
     "bref/bref": "^2.1",
     "bref/extra-php-extensions": "^1.4",
     "bref/laravel-bridge": "^2.3",
